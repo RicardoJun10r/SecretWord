@@ -1,0 +1,11 @@
+.cabeca {
+    position: fixed;
+    top: 0;
+    display: flex;
+    width: 100%;
+    border-bottom: 0.05em solid #000;
+
+    >h1 {
+        margin: 14px;
+    }
+}
