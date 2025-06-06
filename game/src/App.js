@@ -1,11 +1,30 @@
-import { useState } from "react";
+import React from "react";
+import "./app.css"
 import { Header } from "./components/appbar";
 import { Footer } from "./components/footbar";
-import "./app.css"
 import { Game } from "./components/game";
 
 function App() {
-  const [reiniciar, setReiniciar] = useState(false);
+  const [modal, setModal] = React.useState(false);
+
+  const toogleModal = () => {
+    setModal(!modal);
+  }
+
+  function Modal(){
+    return(
+      <div className="modal">
+        <div className="modal-content">
+          <span className="close" onClick={toogleModal}>&times;</span>
+          <h2>Ajuda</h2>
+          <p>Esse é um simples jogo onde você deve adivinhar a palavra secreta.</p>
+          <p>Digite uma letra em cada caixa e pressione Enter para tentar adivinhar.</p>
+          <p>Boa sorte!</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <main>
       <Header />
@@ -14,11 +33,11 @@ function App() {
         <p>Esse é um simples jogo.</p>
         <p>Espero que goste!</p>
         <div className="opcoes">
-          <button>Reiniciar</button>
-          <button>Ajuda</button>
+          <button onClick={toogleModal}>Ajuda</button>
         </div>
-        <div>
-          <Game setReiniciar={setReiniciar} />
+        <div className="game-container">
+          {modal && <Modal />}
+          <Game />
         </div>
       </div>
       <Footer />

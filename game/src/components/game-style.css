@@ -1,7 +1,42 @@
-.linha{
-    
+.board{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
 }
 
-.cell{
+.cell {
+    width: 20px;
+    border-radius: 10px;
+    padding: 20px;
+    font-size: xx-large;
+    outline-style: none;
+    margin: 10px;
+}
 
+.certo {
+    color: #7dee98;
+}
+
+.quase{
+    color: #f3d26b;
+}
+
+.errado {
+    color: #f36969;
+}
+
+.tentativas_jogadas {
+
+    >span {
+        margin: 5px 5px 5px 5px;
+        border: 1px solid black;
+        width: 20px;
+        border-radius: 10px;
+        font-size: xx-large;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
 }
