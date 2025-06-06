@@ -1,5 +1,5 @@
-import React from "react";
 import "./app.css"
+import React from "react";
 import { Header } from "./components/appbar";
 import { Footer } from "./components/footbar";
 import { Game } from "./components/game";
@@ -7,36 +7,37 @@ import { Game } from "./components/game";
 function App() {
   const [modal, setModal] = React.useState(false);
 
-  const toogleModal = () => {
-    setModal(!modal);
+  const open = () => {
+    console.log("Abrindo modal");
+    setModal(true);
   }
 
-  function Modal(){
-    return(
-      <div className="modal">
+  const close = () => {
+    console.log("Fechando modal");
+    setModal(false);
+  }
+
+  function Modal() {
+    return (
+      <dialog className="modal">
         <div className="modal-content">
-          <span className="close" onClick={toogleModal}>&times;</span>
-          <h2>Ajuda</h2>
+          <span className="close" style={{ cursor: 'pointer' }} onClick={close}>&times;</span>
+          <h1>Bem vindo ao Secret Word!</h1>
           <p>Esse é um simples jogo onde você deve adivinhar a palavra secreta.</p>
           <p>Digite uma letra em cada caixa e pressione Enter para tentar adivinhar.</p>
           <p>Boa sorte!</p>
+          <p>Espero que goste!</p>
         </div>
-      </div>
+      </dialog>
     )
   }
 
   return (
     <main>
-      <Header />
+      <Header handleModal={open} />
       <div className="container">
-        <h1>Bem vindo ao Secret Word!</h1>
-        <p>Esse é um simples jogo.</p>
-        <p>Espero que goste!</p>
-        <div className="opcoes">
-          <button onClick={toogleModal}>Ajuda</button>
-        </div>
-        <div className="game-container">
-          {modal && <Modal />}
+        {modal && <Modal />}
+        <div>
           <Game />
         </div>
       </div>

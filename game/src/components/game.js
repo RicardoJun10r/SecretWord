@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { words } from '../db.js';
 import "./game-style.css";
+import { useWords } from '../hook/word-hook.js';
 
 export function Game() {
     useEffect(() => {
@@ -14,7 +15,8 @@ export function Game() {
             window.removeEventListener("keypress", handleKeyPress);
         }
     }, []);
-
+    const { push } = useWords([]);
+    const contador = useRef(0);
     const primeiro = useRef("");
     const segundo = useRef("");
     const terceiro = useRef("");
@@ -22,7 +24,7 @@ export function Game() {
     const quinto = useRef("");
 
     const size = words.length;
-    let palavra = words[Math.random() * size | 0];
+    const palavra = words[Math.random() * size | 0];
     console.log("Palavra escolhida: ", palavra);
     const palavra_array = palavra.split("");
     console.log("Palavra em array: ", palavra_array);
@@ -53,7 +55,13 @@ export function Game() {
         terceiro.current.value = "";
         quarto.current.value = "";
         quinto.current.value = "";
+        contador.current = 0;
         document.getElementById('cell_id').value = '';
+    }
+
+    function validar_letra(letra) {
+        const regex = /^[a-zA-Z]$/;
+        return regex.test(letra);
     }
 
     function is_empty_or_null() {
@@ -106,16 +114,37 @@ export function Game() {
         }
     }
 
+    function pushQueue(){
+        push([primeiro.current.value, segundo.current.value, terceiro.current.value, quarto.current.value, quinto.current.value]);
+    }
+
     function testar() {
-        if (is_empty_or_null()) {
+        if (is_empty_or_null()) return;
+        if (!validar_letra(primeiro.current.value) ||
+            !validar_letra(segundo.current.value) ||
+            !validar_letra(terceiro.current.value) ||
+            !validar_letra(quarto.current.value) ||
+            !validar_letra(quinto.current.value)) {
+            alert("Digite apenas letras!");
+            limpar();
             return;
         }
 
+        contador.current = contador.current + 1;
+        pushQueue();
+        console.log("Tentativa número: ", contador.current);
         if (verificar_se_ganhou()) {
             alert("Parabéns, você acertou!");
             limpar();
+            document.querySelector('.board').removeChild(document.getElementById('tentativa'));
             return;
         } else {
+            if (contador.current == 5) {
+                alert("Você perdeu! A palavra era: " + palavra);
+                limpar();
+                document.querySelector('.board').removeChild(document.getElementById('tentativa'));
+                return;
+            }
             adicionar_letra(primeiro.current.value, 0);
             adicionar_letra(segundo.current.value, 1);
             adicionar_letra(terceiro.current.value, 2);

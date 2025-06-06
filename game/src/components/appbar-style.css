@@ -4,8 +4,18 @@
     display: flex;
     width: 100%;
     border-bottom: 0.05em solid #000;
+    justify-content: space-between;
 
     >h1 {
         margin: 14px;
+    }
+
+    >button {
+        margin: 14px;
+        padding: 0.5em 1em;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1em;
     }
 }
