@@ -8,7 +8,7 @@
 }
 
 .cell {
-    width: 20px;
+    width: 35px;
     border-radius: 10px;
     padding: 20px;
     font-size: xx-large;
@@ -33,7 +33,7 @@
     >span {
         margin: 5px 5px 5px 5px;
         border: 1px solid black;
-        width: 20px;
+        width: 35px;
         border-radius: 10px;
         font-size: xx-large;
         padding-left: 10px;

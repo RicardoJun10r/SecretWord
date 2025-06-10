@@ -3,20 +3,20 @@ import { useWords } from "../hook/word-hook"
 import "./footbar-style.css"
 
 export function Footer() {
-    const { heads, clear, characters } = useWords([]);
-    React.useEffect(()=>{
-        const handleCharacter = () => {
-            const teclas = heads();
-            console.log("Teclas: ", teclas);
-            document.querySelectorAll('.tecla').forEach((tecla, index) => {
-                if(teclas.includes(tecla)){
-                    console.log(tecla)
-                }
-            })
-        }
-        handleCharacter();
-        clear();
-    }, [])
+    // const { heads, clear, characters } = useWords([]);
+    // React.useEffect(()=>{
+    //     const handleCharacter = () => {
+    //         const teclas = heads();
+    //         console.log("Teclas: ", teclas);
+    //         document.querySelectorAll('.tecla').forEach((tecla, index) => {
+    //             if(teclas.includes(tecla)){
+    //                 console.log(tecla)
+    //             }
+    //         })
+    //     }
+    //     handleCharacter();
+    //     clear();
+    // }, [])
 
     return (
         <footer className='rodape'>

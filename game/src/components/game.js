@@ -1,155 +1,202 @@
-import { useEffect, useRef } from 'react';
+import React from 'react';
 import { words } from '../db.js';
 import "./game-style.css";
-import { useWords } from '../hook/word-hook.js';
 
 export function Game() {
-    useEffect(() => {
-        const handleKeyPress = (e) => {
-            if (e.key === "Enter") {
-                testar();
+
+    const handleEnterKeyPress = (e) => {
+        if (e.key === "Enter") {
+            testar();
+        }
+    }
+
+    const handleArrowKeyPress = (e) => {
+        if (e.key === "ArrowRight") {
+            indexador = (indexador + 1) % 5
+            letras.current[indexador].focus()
+        }
+        if (e.key === "ArrowLeft") {
+            var tmp = (indexador - 1) % 5
+            indexador = tmp < 0 ? 4 : tmp
+            letras.current[indexador].focus()
+        }
+    }
+
+    const getWord = () => {
+        return words[Math.random() * size | 0];
+    }
+
+    const [gameId, setGameId] = React.useState(0);
+
+    React.useEffect(() => {
+        handlePalavraRestart(getWord().split(''))
+        window.addEventListener("keypress", handleEnterKeyPress);
+        window.addEventListener("keydown", handleArrowKeyPress);
+        return () => {
+            window.removeEventListener("keypress", handleEnterKeyPress);
+            window.removeEventListener("keydown", handleArrowKeyPress);
+        }
+    }, [gameId]);
+
+    const contador = React.useRef(0);
+    const letras = React.useRef([]);
+    const size = words.length;
+    const [palavra, setPalavra] = React.useState(getWord().split(''));
+    let indexador = 0;
+
+    console.log("Palavra escolhida: ", palavra.join(''));
+
+    const handlePalavraRestart = (update) => {
+        if (gameId !== 0) {
+            if (palavra === update) {
+                handlePalavraRestart(getWord().split(''))
+            } else {
+                setPalavra(update)
+                return;
             }
         }
-        window.addEventListener("keypress", handleKeyPress);
-        return () => {
-            window.removeEventListener("keypress", handleKeyPress);
-        }
-    }, []);
-    const { push } = useWords([]);
-    const contador = useRef(0);
-    const primeiro = useRef("");
-    const segundo = useRef("");
-    const terceiro = useRef("");
-    const quarto = useRef("");
-    const quinto = useRef("");
-
-    const size = words.length;
-    const palavra = words[Math.random() * size | 0];
-    console.log("Palavra escolhida: ", palavra);
-    const palavra_array = palavra.split("");
-    console.log("Palavra em array: ", palavra_array);
+    }
 
     function log_refs() {
-        console.log("primeiro: ", primeiro.current.value);
-        console.log("segundo: ", segundo.current.value);
-        console.log("terceiro: ", terceiro.current.value);
-        console.log("quarto: ", quarto.current.value);
-        console.log("quinto: ", quinto.current.value);
+        for (let i = 0; i < letras.current.length; i++) {
+            console.log(`letra ${i}: `, letras.current[i].value);
+        }
     }
 
     function rodada() {
         return (
             <div className='linha'>
-                <input maxLength={1} type='text' id='cell_id' className='cell _1' ref={primeiro} />
-                <input maxLength={1} type='text' id='cell_id' className='cell _2' ref={segundo} />
-                <input maxLength={1} type='text' id='cell_id' className='cell _3' ref={terceiro} />
-                <input maxLength={1} type='text' id='cell_id' className='cell _4' ref={quarto} />
-                <input maxLength={1} type='text' id='cell_id' className='cell _5' ref={quinto} />
+                {
+                    palavra.map((_, index) => {
+                        return (
+                            <input key={index} maxLength={1} type='text' id='cell_id' className={`cell`} ref={el => letras.current[index] = el} />
+                        )
+                    })
+                }
             </div>
         )
     }
 
+    function restart() {
+        setGameId(id => id + 1)
+    }
+
     function limpar() {
-        primeiro.current.value = "";
-        segundo.current.value = "";
-        terceiro.current.value = "";
-        quarto.current.value = "";
-        quinto.current.value = "";
-        contador.current = 0;
+        for (let i = 0; i < letras.current.length; i++) {
+            letras.current[i].value = "";
+        }
         document.getElementById('cell_id').value = '';
     }
 
     function validar_letra(letra) {
-        const regex = /^[a-zA-Z]$/;
-        return regex.test(letra);
+        return /^[a-zA-Z]$/.test(letra);
     }
 
-    function is_empty_or_null() {
-        log_refs();
-
-        if (primeiro.current.value === "" ||
-            segundo.current.value === "" ||
-            terceiro.current.value === "" ||
-            quarto.current.value === "" ||
-            quinto.current.value === "") {
-            alert("Preencha todos os campos!");
-            return true;
-        }
-        if (primeiro.current.value === undefined ||
-            segundo.current.value === undefined ||
-            terceiro.current.value === undefined ||
-            quarto.current.value === undefined ||
-            quinto.current.value === undefined) {
-            alert("Preencha todos os campos!");
-            return true;
-        }
-    }
-
-    function verificar_se_ganhou() {
-        if (primeiro.current.value === palavra_array[0] &&
-            segundo.current.value === palavra_array[1] &&
-            terceiro.current.value === palavra_array[2] &&
-            quarto.current.value === palavra_array[3] &&
-            quinto.current.value === palavra_array[4]) {
-            return true;
+    function validar_letras() {
+        for (let i = 0; i < letras.current.length; i++) {
+            if (!validar_letra(letras.current[i].value)) {
+                return true;
+            }
         }
         return false;
     }
 
-    function adicionar_letra(letra, index) {
-        const fragmento = document.getElementById('tentativa').appendChild(
-            document.createElement('span')
-        );
-
-        fragmento.innerHTML = `${letra}`;
-
-        if (palavra_array[index] === letra) {
-            fragmento.classList.add("certo");
-        }
-        else if (palavra_array.includes(letra)) {
-            fragmento.classList.add("quase");
-        }
-        else {
-            fragmento.classList.add("errado");
+    function is_empty_or_null() {
+        for (let i = 0; i < letras.current.length; i++) {
+            if (letras.current[i].value === "" || letras.current[i].value === undefined) {
+                alert("Preencha todos os campos!");
+                return true;
+            }
         }
     }
 
-    function pushQueue(){
-        push([primeiro.current.value, segundo.current.value, terceiro.current.value, quarto.current.value, quinto.current.value]);
+    function verificar_se_ganhou() {
+        for (let i = 0; i < letras.current.length; i++) {
+            if (letras.current[i].value !== palavra[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function adicionar_class_list(element, letra, index) {
+        if (palavra[index] === letra) {
+            element.classList.add("certo");
+        }
+        else if (palavra.includes(letra)) {
+            element.classList.add("quase");
+        }
+        else {
+            element.classList.add("errado");
+        }
+    }
+
+    function adicionar_letra(letra, index) {
+
+        const fragmento = document.getElementById('tentativa')
+
+        if (fragmento) {
+            let span = fragmento.appendChild(
+                document.createElement('span')
+            )
+            span.innerHTML = `${letra}`;
+
+            adicionar_class_list(span, letra, index);
+        } else {
+            let tentativa = document.querySelector('.painel').appendChild(
+                document.createElement('div')
+            )
+            tentativa.id = 'tentativa';
+            tentativa.classList.add('tentativas_jogadas');
+        }
+
+    }
+
+    function limpar_tentativas() {
+        var parent = document.querySelector('.painel');
+        var child = document.getElementById('tentativa');
+        if (parent && child) {
+            parent.removeChild(child);
+        }
+    }
+
+    function ganhou() {
+        alert("Parabéns, você acertou!");
+        limpar();
+        limpar_tentativas();
+        contador.current = 0;
+        restart()
+    }
+
+    function perdeu() {
+        alert("Você perdeu! A palavra era: " + palavra);
+        limpar();
+        limpar_tentativas();
+        contador.current = 0;
+        restart()
     }
 
     function testar() {
         if (is_empty_or_null()) return;
-        if (!validar_letra(primeiro.current.value) ||
-            !validar_letra(segundo.current.value) ||
-            !validar_letra(terceiro.current.value) ||
-            !validar_letra(quarto.current.value) ||
-            !validar_letra(quinto.current.value)) {
+        log_refs();
+        if (validar_letras()) {
             alert("Digite apenas letras!");
             limpar();
             return;
         }
-
         contador.current = contador.current + 1;
-        pushQueue();
         console.log("Tentativa número: ", contador.current);
         if (verificar_se_ganhou()) {
-            alert("Parabéns, você acertou!");
-            limpar();
-            document.querySelector('.board').removeChild(document.getElementById('tentativa'));
+            ganhou();
             return;
         } else {
-            if (contador.current == 5) {
-                alert("Você perdeu! A palavra era: " + palavra);
-                limpar();
-                document.querySelector('.board').removeChild(document.getElementById('tentativa'));
+            if (contador.current === 5) {
+                perdeu()
                 return;
             }
-            adicionar_letra(primeiro.current.value, 0);
-            adicionar_letra(segundo.current.value, 1);
-            adicionar_letra(terceiro.current.value, 2);
-            adicionar_letra(quarto.current.value, 3);
-            adicionar_letra(quinto.current.value, 4);
+            for (let i = 0; i < letras.current.length; i++) {
+                adicionar_letra(letras.current[i].value, i);
+            }
             document.querySelector('.tentativas_jogadas').appendChild(
                 document.createElement('br')
             )
@@ -159,7 +206,9 @@ export function Game() {
 
     return (
         <div className='board'>
-            <div id='tentativa' className='tentativas_jogadas' />
+            <div className='painel'>
+                <div id='tentativa' className='tentativas_jogadas' />
+            </div>
             {rodada()}
         </div>
     )
