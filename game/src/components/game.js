@@ -1,8 +1,11 @@
 import React from 'react';
 import { words } from '../db.js';
 import "./game-style.css";
+import { useWords } from '../hook/word-hook.js';
 
 export function Game() {
+
+    const { push } = useWords();
 
     const handleEnterKeyPress = (e) => {
         if (e.key === "Enter") {
@@ -148,6 +151,11 @@ export function Game() {
             )
             tentativa.id = 'tentativa';
             tentativa.classList.add('tentativas_jogadas');
+            let span = tentativa.appendChild(
+                document.createElement('span')
+            )
+            span.innerHTML = `${letra}`
+            adicionar_class_list(span, letra, index)
         }
 
     }
@@ -196,6 +204,7 @@ export function Game() {
             }
             for (let i = 0; i < letras.current.length; i++) {
                 adicionar_letra(letras.current[i].value, i);
+                push(letras.current[i].value)
             }
             document.querySelector('.tentativas_jogadas').appendChild(
                 document.createElement('br')

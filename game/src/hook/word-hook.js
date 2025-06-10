@@ -18,5 +18,10 @@ export const useWords = (initialValue = []) => {
         return characters.slice(0, 5);
     }
 
-    return {characters, push, clear, heads};
+    return {
+        characters,
+        push,
+        clear,
+        heads
+    };
 }

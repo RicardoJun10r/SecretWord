@@ -2,21 +2,33 @@ import React from "react";
 import { useWords } from "../hook/word-hook"
 import "./footbar-style.css"
 
+const teclas = [
+    'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
+    'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l',
+    'z', 'x', 'c', 'v', 'b', 'n', 'm'
+];
+
 export function Footer() {
-    // const { heads, clear, characters } = useWords([]);
-    // React.useEffect(()=>{
-    //     const handleCharacter = () => {
-    //         const teclas = heads();
-    //         console.log("Teclas: ", teclas);
-    //         document.querySelectorAll('.tecla').forEach((tecla, index) => {
-    //             if(teclas.includes(tecla)){
-    //                 console.log(tecla)
-    //             }
-    //         })
-    //     }
-    //     handleCharacter();
-    //     clear();
-    // }, [])
+
+    const { clear, heads, characters } = useWords();
+
+    React.useEffect(() => {
+        const handleCharacter = (e) => {
+            let chave = e.key;
+            console.log(`Teclou ${chave}`)
+            let chaves = heads();
+            for (let i = 0; i < chaves.length; i++) {
+                if (teclas.includes(chaves[i])) {
+                    document.getElementById(`tecla_${chaves[i]}`).style.color = 'red';
+                }
+            }
+        }
+        window.addEventListener("change", handleCharacter);
+        return () => {
+            window.removeEventListener("change", handleCharacter);
+        }
+
+    }, [characters])
 
     return (
         <footer className='rodape'>
