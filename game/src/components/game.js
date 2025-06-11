@@ -7,6 +7,11 @@ export function Game() {
 
     const { push, clear } = React.useContext(WordContext);
 
+    const [alertModal, setAlertModal] = React.useState({
+        isOpen: false,
+        message: ''
+    });
+
     const handleEnterKeyPress = (e) => {
         if (e.key === "Enter") {
             testar();
@@ -169,7 +174,11 @@ export function Game() {
     }
 
     function ganhou() {
-        alert("Parabéns, você acertou!");
+        setAlertModal({ isOpen: true, message: "Parabéns, você acertou!" });
+    }
+
+    const handleRestartGame = () => {
+        setAlertModal({ isOpen: false, message: '' })
         limpar();
         limpar_tentativas();
         contador.current = 0;
@@ -178,12 +187,19 @@ export function Game() {
     }
 
     function perdeu() {
-        alert("Você perdeu! A palavra era: " + palavra);
-        limpar();
-        limpar_tentativas();
-        contador.current = 0;
-        restart()
-        clear()
+        setAlertModal({ isOpen: true, message: "Você perdeu! A palavra era: " + palavra.join('').toUpperCase() });
+    }
+
+    function GameModalAlert({ isOpen, message, onClose }) {
+        if (!isOpen) return null;
+        return (
+            <div className='game-alert-backdrop'>
+                <div className='game-alert-modal'>
+                    <h2>{message}</h2>
+                    <button onClick={onClose}>Jogar Novamente</button>
+                </div>
+            </div>
+        )
     }
 
     function testar() {
@@ -210,13 +226,18 @@ export function Game() {
             limpar();
         }
     }
-
+    console.log(palavra)
     return (
         <div className='board'>
             <div className='painel'>
                 <div id='tentativa' className='tentativas_jogadas' />
             </div>
             {rodada()}
+            <GameModalAlert
+                isOpen={alertModal.isOpen}
+                message={alertModal.message}
+                onClose={handleRestartGame}
+            />
         </div>
     )
 }

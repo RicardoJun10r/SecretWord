@@ -26,6 +26,101 @@
     gap: 6px;
 }
 
+dialog.modal {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+    background-color: #27272a;
+    color: #D7DADC;
+
+    width: 90%;
+    max-width: 500px;
+
+    margin: auto;
+    padding: 2rem;
+}
+
+dialog.modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+}
+
+.modal-content h1 {
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 1rem;
+}
+
+.modal-content p {
+    line-height: 1.6;
+    margin-bottom: 0.8rem;
+}
+
+.modal-content .close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 2rem;
+    color: #D7DADC;
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.modal-content .close:hover {
+    color: #fff;
+    transform: scale(1.2);
+}
+
+.game-alert-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.game-alert-modal {
+    background-color: #27272a;
+    color: #D7DADC;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 90%;
+}
+
+.game-alert-modal h2 {
+    font-size: 1.5rem;
+    margin: 0 0 20px 0;
+    line-height: 1.4;
+}
+
+.game-alert-modal button {
+    background-color: #538D4E;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.game-alert-modal button:hover {
+    background-color: #63a35c;
+    transform: scale(1.05);
+}
+
 .cell {
     width: 100%;
     aspect-ratio: 1 / 1;
