@@ -1,5 +1,5 @@
 import React from "react";
-import { useWords } from "../hook/word-hook"
+import { WordContext } from "../hook/word-hook"
 import "./footbar-style.css"
 
 const teclas = [
@@ -10,29 +10,27 @@ const teclas = [
 
 export function Footer() {
 
-    const { clear, heads, characters } = useWords();
+    const { heads, characters } = React.useContext(WordContext);
 
     React.useEffect(() => {
-        const handleCharacter = (e) => {
-            let chave = e.key;
-            console.log(`Teclou ${chave}`)
+        const handleCharacter = () => {
             let chaves = heads();
-            for (let i = 0; i < chaves.length; i++) {
-                if (teclas.includes(chaves[i])) {
-                    document.getElementById(`tecla_${chaves[i]}`).style.color = 'red';
+            if (chaves.length === 0) {
+                document.querySelectorAll(".tecla").forEach(tecla => tecla.style.color = 'black')
+            } else {
+                for (let i = 0; i < chaves.length; i++) {
+                    if (teclas.includes(chaves[i])) {
+                        document.getElementById(`tecla_${chaves[i]}`).style.color = 'red';
+                    }
                 }
             }
         }
-        window.addEventListener("change", handleCharacter);
-        return () => {
-            window.removeEventListener("change", handleCharacter);
-        }
-
-    }, [characters])
+        handleCharacter();
+    }, [characters, heads])
 
     return (
         <footer className='rodape'>
-            <div className="teclado">
+            <div id="teclado" className="teclado">
                 <div id="tecla_q" className="tecla">Q</div>
                 <div id="tecla_w" className="tecla">W</div>
                 <div id="tecla_e" className="tecla">E</div>

@@ -1,27 +1,34 @@
 import React from "react";
 
-export const useWords = (initialValue = []) => {
-    const [characters, setCharacters] = React.useState(initialValue);
+export const WordContext = React.createContext()
+
+export function Words({ children }) {
+    const [characters, setCharacters] = React.useState([]);
 
     const push = (chars) => {
         setCharacters((prevChars) => [...prevChars, ...chars]);
     }
 
     const clear = () => {
-        setCharacters([]);
+        let novo = []
+        setCharacters(novo);
     }
 
     const heads = () => {
         if (characters.length === 0) {
             return [];
         }
-        return characters.slice(0, 5);
+        return characters.slice(characters.length - 5, characters.length);
     }
 
-    return {
-        characters,
-        push,
-        clear,
-        heads
-    };
+    return (
+        <WordContext.Provider value={{
+            push,
+            clear,
+            heads,
+            characters
+        }}>
+            {children}
+        </WordContext.Provider>
+    )
 }

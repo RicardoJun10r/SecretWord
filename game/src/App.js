@@ -3,17 +3,16 @@ import React from "react";
 import { Header } from "./components/appbar";
 import { Footer } from "./components/footbar";
 import { Game } from "./components/game";
+import { Words } from "./hook/word-hook";
 
 function App() {
   const [modal, setModal] = React.useState(false);
 
   const open = () => {
-    console.log("Abrindo modal");
     setModal(true);
   }
 
   const close = () => {
-    console.log("Fechando modal");
     setModal(false);
   }
 
@@ -34,14 +33,16 @@ function App() {
 
   return (
     <main>
-      <Header handleModal={open} />
-      <div className="container">
-        {modal && <Modal />}
-        <div>
-          <Game />
+      <Words>
+        <Header handleModal={open} />
+        <div className="container">
+          {modal && <Modal />}
+          <div>
+            <Game />
+          </div>
         </div>
-      </div>
-      <Footer />
+        <Footer />
+      </Words>
     </main>
   );
 }

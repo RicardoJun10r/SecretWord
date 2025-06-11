@@ -1,11 +1,11 @@
 import React from 'react';
 import { words } from '../db.js';
 import "./game-style.css";
-import { useWords } from '../hook/word-hook.js';
+import { WordContext } from '../hook/word-hook.js';
 
 export function Game() {
 
-    const { push } = useWords();
+    const { push, clear } = React.useContext(WordContext);
 
     const handleEnterKeyPress = (e) => {
         if (e.key === "Enter") {
@@ -46,8 +46,6 @@ export function Game() {
     const size = words.length;
     const [palavra, setPalavra] = React.useState(getWord().split(''));
     let indexador = 0;
-
-    console.log("Palavra escolhida: ", palavra.join(''));
 
     const handlePalavraRestart = (update) => {
         if (gameId !== 0) {
@@ -174,6 +172,7 @@ export function Game() {
         limpar_tentativas();
         contador.current = 0;
         restart()
+        clear()
     }
 
     function perdeu() {
@@ -182,6 +181,7 @@ export function Game() {
         limpar_tentativas();
         contador.current = 0;
         restart()
+        clear()
     }
 
     function testar() {
@@ -193,7 +193,6 @@ export function Game() {
             return;
         }
         contador.current = contador.current + 1;
-        console.log("Tentativa número: ", contador.current);
         if (verificar_se_ganhou()) {
             ganhou();
             return;
