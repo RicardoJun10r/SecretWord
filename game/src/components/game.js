@@ -140,6 +140,7 @@ export function Game() {
             let span = fragmento.appendChild(
                 document.createElement('span')
             )
+            span.classList.add("cell")
             span.innerHTML = `${letra}`;
 
             adicionar_class_list(span, letra, index);
@@ -152,6 +153,7 @@ export function Game() {
             let span = tentativa.appendChild(
                 document.createElement('span')
             )
+            span.classList.add("cell")
             span.innerHTML = `${letra}`
             adicionar_class_list(span, letra, index)
         }
@@ -161,8 +163,8 @@ export function Game() {
     function limpar_tentativas() {
         var parent = document.querySelector('.painel');
         var child = document.getElementById('tentativa');
-        if (parent && child) {
-            parent.removeChild(child);
+        if (parent) {
+            parent.innerHTML = "";
         }
     }
 
@@ -205,9 +207,6 @@ export function Game() {
                 adicionar_letra(letras.current[i].value, i);
                 push(letras.current[i].value)
             }
-            document.querySelector('.tentativas_jogadas').appendChild(
-                document.createElement('br')
-            )
             limpar();
         }
     }

@@ -8,6 +8,15 @@ import { Words } from "./hook/word-hook";
 function App() {
   const [modal, setModal] = React.useState(false);
 
+  const modalRef = React.useRef(null);
+
+  React.useEffect(() => {
+    if(modal){
+      modalRef.current?.showModal();
+    } else {
+      modalRef.current?.close();
+    }
+  }, [modal])
   const open = () => {
     setModal(true);
   }
@@ -18,7 +27,7 @@ function App() {
 
   function Modal() {
     return (
-      <dialog className="modal">
+      <dialog ref={modalRef} onClose={close} className="modal">
         <div className="modal-content">
           <span className="close" style={{ cursor: 'pointer' }} onClick={close}>&times;</span>
           <h1>Bem vindo ao Secret Word!</h1>

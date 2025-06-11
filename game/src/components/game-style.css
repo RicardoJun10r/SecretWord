@@ -1,42 +1,79 @@
-.board{
+.board {
+    width: 100%;
+    max-width: 350px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
+    gap: 10px;
+    margin: 20px;
 }
 
-.cell {
-    width: 35px;
-    border-radius: 10px;
-    padding: 20px;
-    font-size: xx-large;
-    outline-style: none;
-    margin: 10px;
-}
-
-.certo {
-    color: #7dee98;
-}
-
-.quase{
-    color: #f3d26b;
-}
-
-.errado {
-    color: #f36969;
+.painel {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 6px;
+    margin-bottom: 20px;
 }
 
 .tentativas_jogadas {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+}
 
-    >span {
-        margin: 5px 5px 5px 5px;
-        border: 1px solid black;
-        width: 35px;
-        border-radius: 10px;
-        font-size: xx-large;
-        padding-left: 10px;
-        padding-right: 10px;
-    }
+.linha {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+}
+
+.cell {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border: 2px solid #3a3a3c;
+    border-radius: 4px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #d7dadc;
+
+    background-color: transparent;
+    caret-color: #d7dadc;
+    text-align: center;
+    outline: none;
+
+    transition:
+        background-color 0.4s ease,
+        border-color 0.4s ease,
+        transform 0.2s ease;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.cell:focus-within {
+    border-color: #818384;
+}
+
+.certo {
+    background-color: #538d4e;
+    border-color: #538d4e;
+    color: #fff;
+}
+
+.quase {
+    background-color: #b59f3b;
+    border-color: #b59f3b;
+    color: #fff;
+}
+
+.errado {
+    background-color: #3a3a3c;
+    border-color: #3a3a3c;
+    color: #fff;
 }

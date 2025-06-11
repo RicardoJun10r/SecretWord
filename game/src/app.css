@@ -1,16 +1,44 @@
-.container {
-    height: 100vh;
+main {
     display: flex;
-    align-items: center;
-    justify-content: center;
     flex-direction: column;
-    overflow: hidden;
+    height: 100vh;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    width: 100%;
+    overflow-y: auto;
 }
 
 .modal {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(255, 255, 255, 0.9);
-    border: 1px dotted black;
+    background-color: #27272a;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    padding: 2rem;
+    width: 90%;
+    max-width: 500px;
+    color: #d7dadc;
+}
+
+.modal-content .close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 2rem;
+    color: #d7dadc;
+    transition: transform 0.2s ease;
+    cursor: pointer;
+}
+
+.modal-content .close:hover {
+    transform: scale(1.2);
 }
